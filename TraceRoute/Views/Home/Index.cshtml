@@ -1,14 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-@{
-    ViewData["Title"] = "Home Page";
-}
  <h1><center> TraceRoute </center> </h1>
 
  <p> This application serves as a visualization for displaying the route and delay times across an IP network </p>
-
  <style>
        #map {
         height: 400px;
@@ -17,40 +12,7 @@
     </style>
   <body>
     <div id="map"></div>
-    <script>
-        var map;  
-    var markers = [];  
-  
-function initMap() {  
-  var lat_lng = {lat: 42.361145, lng: -71.057083};  
-  
-  map = new google.maps.Map(document.getElementById('map'), {  
-    zoom: 12,  
-    center: lat_lng,  
-    mapTypeId: google.maps.MapTypeId.TERRAIN  
-  });  
-  
-  // This event listener will call addMarker() when the map is clicked.  
-  map.addListener('click', function(event) {  
-    addMarker(event.latLng);  
-  });  
-  
-  // Adds a marker at the center of the map.  
-  addMarker(lat_lng);  
-}  
-  
-// Adds a marker to the map and push to the array.  
-function addMarker(location) {  
-  var marker = new google.maps.Marker({  
-    position: location,  
-    map: map  
-  });  
-  markers.push(marker);  
-}  
-        
-
-        
-    </script>
+    <script src = "./js/Map.js" type="text/javascript"> </script>
     <script 
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnQJ3WLOWkGswgEVZzKXSVzr1y5n4b9f0&callback=initMap">
     </script>
