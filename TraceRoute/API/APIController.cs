@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using RestSharp;
 
 namespace TraceRoute.API
 {
@@ -51,11 +54,12 @@ namespace TraceRoute.API
 
                 if (index != -1)
                 {
-                    traces.Add(new Trace()
-                    {
-                        HopAddress = Regex.Replace(hopData.ElementAt(index), "[()]", ""),
-                        TripTime = float.Parse(hopData.ElementAt(index+1))
-                    });
+                    Trace t = new Trace();
+                    t.HopAddress = Regex.Replace(hopData.ElementAt(index), "[()]", "");
+                    t.TripTime = float.Parse(hopData.ElementAt(index + 1));
+                    t.Coordinates = Locate(t);
+                    traces.Add(t);
+
                 }
             }
 
@@ -64,16 +68,32 @@ namespace TraceRoute.API
 
             return response;
         }
+
+        public Coordinate Locate(Trace trace)
+        {
+            var client = new RestClient("https://api.ipdata.co/" + trace.HopAddress);
+            var request = new RestRequest(Method.GET);
+            IRestResponse<Coordinate> response =  client.Execute<Coordinate>(request);
+
+            return response.Data;
+        }
     }
 
     public class Trace
     {
         public string HopAddress { get; set; }
         public float TripTime { get; set; }
+        public Coordinate Coordinates { get; set; }
     }
 
     public class TraceRequest
     {
         public string Hostname { get; set; }
+    }
+
+    public class Coordinate
+    {
+        public float Latitude { get; set; }
+        public float Longitude { get; set; }
     }
 }
