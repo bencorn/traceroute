@@ -19,3 +19,7 @@
     left: 0;
     right: 0;
 }
+
+body{
+    font-weight: 200 !important;
+}
