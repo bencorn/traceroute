@@ -1,19 +1,30 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+ViewData["Title"] = "Visual Trace Route";
 }
- <h1><center> TraceRoute </center> </h1>
+<style>
+    #map {
+        height: 100%;
+    }
+</style>
+<body ng-app="app" ng-controller="traceRouteController">
+    <div class="tr-container">
+        <div class="tr-input row">
+            <div class="col-sm-10">
+                <form>
+                  <div class="form-group">
+                    <input type="text" class="form-control" placeholder="google.com">
+                  </div>
+                </form>
+            </div>
+            <div class="col-sm-2">
+                <button class="btn btn-secondary btn-block tr-trace" type="">Trace</button>        
+            </div>
+        </div>
+        <div class="tr-map" id="map"></div>
+	</div>
 
- <p> This application serves as a visualization for displaying the route and delay times across an IP network </p>
- <style>
-       #map {
-        height: 400px;
-        width: 100%;
-       }
-    </style>
-  <body>
-    <div id="map"></div>
     <script src = "./js/Map.js" type="text/javascript"> </script>
     <script 
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAnQJ3WLOWkGswgEVZzKXSVzr1y5n4b9f0&callback=initMap">
     </script>
-  </body>
+</body>
