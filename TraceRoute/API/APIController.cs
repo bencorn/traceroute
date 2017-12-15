@@ -28,7 +28,7 @@ namespace TraceRoute.API
             List<Trace> traces = new List<Trace>();
             JsonResult response;
 
-            string trace = "traceroute " + destination;
+            string trace = "traceroute -n -m 30 -w1 -q 1 " + destination;
             var traceResult = trace.Bash();
             var hops = traceResult.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
@@ -44,22 +44,13 @@ namespace TraceRoute.API
 
                 var hopData = hop.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
 
-                int index = -1;
-
-                for (int i = 0; i < hopData.Count(); i++)
-                {
-                    if (hopData[i].Contains("("))
-                        index = i;
-                }
-
-                if (index != -1)
+                if (!hopData[1].Contains("*"))
                 {
                     Trace t = new Trace();
-                    t.HopAddress = Regex.Replace(hopData.ElementAt(index), "[()]", "");
-                    t.TripTime = float.Parse(hopData.ElementAt(index + 1));
+                    t.HopAddress = hopData[1];
+                    t.TripTime = float.Parse(hopData[2]);
                     t.Coordinates = Locate(t);
                     traces.Add(t);
-
                 }
             }
 
