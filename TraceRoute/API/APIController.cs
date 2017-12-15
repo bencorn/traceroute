@@ -54,6 +54,8 @@ namespace TraceRoute.API
                 }
             }
 
+            traces = traces.GroupBy(x => new { x.Coordinates.Latitude , x.Coordinates.Longitude}).Select(x => x.First()).ToList();
+
             response = new JsonResult(traces);
             response.StatusCode = (int)HttpStatusCode.OK;
 
