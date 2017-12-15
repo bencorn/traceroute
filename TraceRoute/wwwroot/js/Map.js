@@ -2,6 +2,7 @@
 
 var traceRoute;
 var map;
+var markers = [];
 
 function initMap() {
     var styleNightMode = new google.maps.StyledMapType(
@@ -114,7 +115,7 @@ function initMap() {
     });
     traceRoute.setMap(map);
 
-    map.addListener('click', addLatLng);
+    //map.addListener('click', addLatLng);
 }
 
 
@@ -131,9 +132,19 @@ function addLatLng(event) {
 }
 
 function addMarker(location) {
+    
     var marker = new google.maps.Marker({
         position: location,
         map: map
     });
-    markers.push(marker);
-}  
+
+    //var path = traceRoute.getPath();
+    //path.push(marker.position);
+
+    return marker;
+} 
+
+function clearMarkersAndPaths(){
+    path = [];
+    markers = [];
+  }   
