@@ -14,6 +14,11 @@ namespace TraceRoute.API
         {
         }
 
+        /// <summary>
+        /// Performs traceroute on specified hostname.
+        /// </summary>
+        /// <returns>JSON array of hops and the round trip time.</returns>
+        /// <param name="destination">Hostname IP / URL</param>
         [HttpGet("api/trace/{destination}")]
         public JsonResult TraceRoute(string destination)
         {
@@ -28,6 +33,7 @@ namespace TraceRoute.API
             {
                 response = new JsonResult("Traceroute returned empty path for URL.");
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return response;
             }
 
             foreach (string hop in hops)
