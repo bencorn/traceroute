@@ -1,35 +1,55 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿.tr-container{
 }
 
-/* Wrapping element */
-/* Set some basic padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+.tr-map{
+    left: 0;
+    right: 0;
+    height: 100%;
+    overflow-x: hidden !important;
+    position: absolute !important;
+    margin-top: -1em;
 }
 
-/* Carousel */
-.carousel-caption p {
-    font-size: 20px;
-    line-height: 1.4;
-}
-
-/* Make .svg files in the carousel display properly in older browsers */
-.carousel-inner .item img[src$=".svg"] {
+.tr-input {
+    position: fixed;
     width: 100%;
+    margin-top: -.3em !important;
+    z-index: 10;
+    margin: auto;
+    left: -10px;
+    right: 0;
 }
 
-/* QR code generator */
-#qrCode {
-    margin: 15px;
+body{
+    font-weight: 200 !important;
 }
 
-/* Hide/rearrange for smaller screens */
-@media screen and (max-width: 767px) {
-    /* Hide captions */
-    .carousel-caption {
-        display: none;
-    }
+.tr-input-group {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2), 0 -1px 0px rgba(0,0,0,0.02) !important;
+    border-radius: 2px !important;
+    width: 392px;
+    height: 48px;
+    border-bottom: 1px solid transparent !important;
+    transition-property: background,box-shadow !important;
+    transition-duration: 0.3s;
+}
+
+.btn-secondary {
+    background-color: rgba(65,134,245,1);
+    border-radius: 2px !important;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(65,134,245,.8);
+}
+
+input {
+    font-weight: 200 !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none !important;
 }
