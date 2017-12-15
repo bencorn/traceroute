@@ -3,22 +3,23 @@ ViewData["Title"] = "Visual Trace Route";
 }
 <style>
     #map {
-        height: 100%;
+        height: 94%;
     }
 </style>
+<script src="https://use.fontawesome.com/2a2baed1f3.js"></script>
 <body ng-app="app" ng-controller="traceRouteController as vm">
     <div class="tr-container">
         <div class="tr-input row">
-            <div class="col-sm-10">
-                <form>
-                  <div class="form-group">
-                    <input ng-model="vm.Hostname" type="text" class="form-control" placeholder="google.com">
-                  </div>
-                </form>
-            </div>
-            <div class="col-sm-2">
-                <button ng-click="vm.TraceRoute()" class="btn btn-secondary btn-block tr-trace" type="">Trace</button>        
-            </div>
+            <div class="col-sm-12">
+				<div class="input-group tr-input-group">
+                  <input ng-model="vm.Hostname" type="text" class="form-control" placeholder="Perform Trace Route">
+                  <span class="input-group-btn">
+                    <button ng-click="vm.TraceRoute()" class="btn btn-secondary" type="button">
+							<i class="fa fa-search" aria-hidden="true"></i>
+					</button>
+                  </span>
+                </div>
+			</div>
         </div>
         <div class="tr-map" id="map"></div>
 	</div>

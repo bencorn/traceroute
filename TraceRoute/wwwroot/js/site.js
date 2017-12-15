@@ -1,8 +1,5 @@
-﻿// Write your JavaScript code.
-
-var markers = [];
-// var traceroute;
-// var path = traceroute.getPath();
+﻿var markers = [];
+var polyLine = [];
 
 function initMap() {
     var styleNightMode = new google.maps.StyledMapType(
@@ -100,7 +97,7 @@ function initMap() {
     map.setMapTypeId('night_mode');
 
     var lineSymbol = {
-        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+        path: google.maps.SymbolPath.FORWARD_OPEN_ARROW
     };
 
     traceRoute = new google.maps.Polyline({
@@ -115,7 +112,6 @@ function initMap() {
     });
     traceRoute.setMap(map);
 
-    //map.addListener('click', addLatLng);
 }
 
 
@@ -123,7 +119,7 @@ function addLatLng(event) {
     var path = traceRoute.getPath();
 
     path.push(event.latLng);
-
+    polyLine.push(event.latLng);
     var marker = new google.maps.Marker({
         position: event.latLng,
         title: '#' + path.getLength(),
@@ -136,17 +132,38 @@ function addMarker(location, value) {
     var marker = new google.maps.Marker({
         position: location,
         map: map,
-        icon: 'http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=' + value + '|FE6256|000000',
-        draggable: true
+        label: value.toString(),
+        draggable: false
     });
 
     var path = traceRoute.getPath();
     path.push(marker.position);
+    markers.push(marker);
 
     return marker;
 }
 
-  function clearMarkersAndPaths(){
-    path = [];
+function clearMarkers()
+{
+    setMapOnAll(map);
+}
+
+function clearMarkersAndPaths()
+{
+    clearMarkers();
     markers = [];
-  }  
+} 
+
+function setMapOnAll(map) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
+  traceRoute.setMap(null);
+  traceRoute = new google.maps.Polyline({
+      strokeColor: '#4286f4',
+        strokeOpacity: 1,
+        strokeWeight: 3,
+        map: map
+  });
+  traceRoute.setMap(map);
+}

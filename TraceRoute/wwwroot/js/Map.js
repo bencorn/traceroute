@@ -89,24 +89,27 @@ function initMap() {
         { name: 'Night Mode' });
 
     map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 42.349179, lng: -71.106476},
-        zoom: 14,
+        center: {lat: 38, lng: -98},
+        zoom: 5,
         mapTypeControlOptions: {
-            mapTypeIds: ['roadmap', 'night_mode']
+            mapTypeIds: ['roadmap', 'night_mode'],
+            position: google.maps.ControlPosition.BOTTOM_CENTER
         }
     });
 
     map.mapTypes.set('night_mode', styleNightMode);
-    map.setMapTypeId('night_mode');
+    map.setMapTypeId('roadmap');
 
     var lineSymbol = {
-        path: google.maps.SymbolPath.FORWARD_CLOSED_ARROW
+        path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
+        fillColor: 'black',
+        fillOpacity: .5
     };
 
     traceRoute = new google.maps.Polyline({
-        strokeColor: '#f75c54',
+        strokeColor: '#4286f4',
         strokeOpacity: 1.0,
-        strokeWeight: 5,
+        strokeWeight: 3,
         icons: [{
             icon: lineSymbol,
             offset: '100%'
@@ -115,7 +118,6 @@ function initMap() {
     });
     traceRoute.setMap(map);
 
-    //map.addListener('click', addLatLng);
 }
 
 
@@ -138,13 +140,16 @@ function addMarker(location) {
         map: map
     });
 
-    //var path = traceRoute.getPath();
-    //path.push(marker.position);
-
     return marker;
 } 
 
-function clearMarkersAndPaths(){
-    path = [];
+function clearMarkers()
+{
+    setMapOnAll(null);
+}
+
+function clearMarkersAndPaths()
+{
+    clearMarkers();
     markers = [];
-  }   
+}   
