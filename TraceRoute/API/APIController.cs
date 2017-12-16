@@ -30,11 +30,16 @@ namespace TraceRoute.API
 
             string trace = "traceroute -n -m 30 -w1 -q 1 " + destination;
             var traceResult = trace.Bash();
-            var hops = traceResult.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            var hops = traceResult.Split(Environment.NewLine.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
+
+            if (hops[0].Contains("traceroute"))
+            {
+                hops.RemoveAt(0);
+            }
 
             if (hops.Count() == 0)
             {
-                response = new JsonResult("Traceroute returned empty path for URL.");
+                response = new JsonResult(traceResult);
                 response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return response;
             }

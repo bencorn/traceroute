@@ -145,7 +145,6 @@ function addMarker(location) {
 
 function clearMarkers()
 {
-    setMapOnAll(null);
 }
 
 function clearMarkersAndPaths()
