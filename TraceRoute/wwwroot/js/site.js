@@ -1,5 +1,6 @@
 ﻿var markers = [];
 var polyLine = [];
+var bounds = [];
 
 function initMap() {
     var styleNightMode = new google.maps.StyledMapType(
@@ -114,19 +115,6 @@ function initMap() {
 
 }
 
-
-function addLatLng(event) {
-    var path = traceRoute.getPath();
-
-    path.push(event.latLng);
-    polyLine.push(event.latLng);
-    var marker = new google.maps.Marker({
-        position: event.latLng,
-        title: '#' + path.getLength(),
-        map: map
-    });
-}
-
 function addMarker(location, value) {
 
     var marker = new google.maps.Marker({
@@ -139,7 +127,8 @@ function addMarker(location, value) {
     var path = traceRoute.getPath();
     path.push(marker.position);
     markers.push(marker);
-
+    loc = new google.maps.LatLng(marker.position.lat(), marker.position.lng());
+    bounds.extend(loc);
     return marker;
 }
 
@@ -159,6 +148,7 @@ function setMapOnAll(map) {
     markers[i].setMap(null);
   }
   traceRoute.setMap(null);
+  bounds  = new google.maps.LatLngBounds();
   traceRoute = new google.maps.Polyline({
       strokeColor: '#4286f4',
         strokeOpacity: 1,
@@ -166,4 +156,10 @@ function setMapOnAll(map) {
         map: map
   });
   traceRoute.setMap(map);
+}
+
+function autoZoom()
+{
+    map.fitBounds(bounds);
+    map.panToBounds(bounds);
 }

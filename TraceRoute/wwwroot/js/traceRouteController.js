@@ -37,7 +37,7 @@
                         marker = addMarker(position, (i+1));
                         markers.push(marker);
                     }
-
+                    autoZoom();
                 }
 
             )
