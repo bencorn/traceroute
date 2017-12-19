@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using RestSharp;
 
 namespace TraceRoute.API
@@ -54,12 +55,15 @@ namespace TraceRoute.API
                     Trace t = new Trace();
                     t.HopAddress = hopData[1];
                     t.TripTime = float.Parse(hopData[2]);
-                    t.Coordinates = Locate(t);
+                    t.Coordinates = Locate(t).Data.Geo;
                     traces.Add(t);
                 }
             }
 
-            traces = traces.GroupBy(x => new { x.Coordinates.Latitude , x.Coordinates.Longitude}).Select(x => x.First()).ToList();
+            traces = traces.Where(x => x.Coordinates.Latitude != null && x.Coordinates.Longitude != null)
+                           .GroupBy(x => new { x.Coordinates.Latitude, x.Coordinates.Longitude })
+                           .Select(x => x.First())
+                           .ToList();
 
             response = new JsonResult(traces);
             response.StatusCode = (int)HttpStatusCode.OK;
@@ -67,13 +71,13 @@ namespace TraceRoute.API
             return response;
         }
 
-        public Coordinate Locate(Trace trace)
+        public CDNResponse Locate(Trace trace)
         {
-            var client = new RestClient("https://api.ipdata.co/" + trace.HopAddress);
+            var client = new RestClient("https://tools.keycdn.com/geo.json?host=" + trace.HopAddress);
             var request = new RestRequest(Method.GET);
-            IRestResponse<Coordinate> response =  client.Execute<Coordinate>(request);
+            IRestResponse response =  client.Execute(request);
 
-            return response.Data;
+            return JsonConvert.DeserializeObject<CDNResponse>(response.Content);
         }
     }
 
@@ -81,7 +85,7 @@ namespace TraceRoute.API
     {
         public string HopAddress { get; set; }
         public float TripTime { get; set; }
-        public Coordinate Coordinates { get; set; }
+        public CDNGeo Coordinates { get; set; }
     }
 
     public class TraceRequest
@@ -89,9 +93,21 @@ namespace TraceRoute.API
         public string Hostname { get; set; }
     }
 
-    public class Coordinate
+    public class CDNResponse
     {
-        public float Latitude { get; set; }
-        public float Longitude { get; set; }
+        public CDNData Data { get; set; }
+    }
+
+    public class CDNData
+    {
+        public CDNGeo Geo { get; set; }
+    }
+
+    public class CDNGeo
+    {
+        [JsonProperty(PropertyName = "latitude")]
+        public float? Latitude { get; set; }
+        [JsonProperty(PropertyName = "longitude")]
+        public float? Longitude { get; set; }
     }
 }
